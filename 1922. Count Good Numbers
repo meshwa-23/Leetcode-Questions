@@ -1,0 +1,35 @@
+class Solution {
+    long MOD = 1_000_000_007;
+
+    // Modular exponentiation to calculate (base^exp) % mod
+    private long power(long base, long exp) {
+        long res = 1;
+        base %= MOD;
+        while (exp > 0) {
+            if (exp % 2 == 1) {
+                res = (res * base) % MOD;
+            }
+            base = (base * base) % MOD;
+            exp /= 2;
+        }
+        return res;
+    }
+
+    public int countGoodNumbers(long n) {
+        // Number of positions at even indices (0, 2, 4, ...)
+        long even_positions = (n + 1) / 2;
+        // Number of positions at odd indices (1, 3, 5, ...)
+        long odd_positions = n / 2;
+
+        // Number of choices for even indices: 0, 2, 4, 6, 8 (5 choices)
+        long even_choices = power(5, even_positions);
+        
+        // Number of choices for odd indices: 2, 3, 5, 7 (4 choices)
+        long odd_choices = power(4, odd_positions);
+        
+        // Total combinations = (5^even_positions) * (4^odd_positions)
+        long result = (even_choices * odd_choices) % MOD;
+
+        return (int) result;
+    }
+}
