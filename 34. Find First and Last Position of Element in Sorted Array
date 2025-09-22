@@ -1,0 +1,32 @@
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] result = new int[2];
+        result[0] = findPosition(nums, target, true); // Find the first occurrence
+        result[1] = findPosition(nums, target, false); // Find the last occurrence
+        return result;
+    }
+
+    private int findPosition(int[] nums, int target, boolean findFirst) {
+        int left = 0;
+        int right = nums.length - 1;
+        int position = -1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (nums[mid] == target) {
+                position = mid;
+                if (findFirst) {
+                    right = mid - 1; // Look for the first occurrence to the left
+                } else {
+                    left = mid + 1;  // Look for the last occurrence to the right
+                }
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return position;
+    }
+}
