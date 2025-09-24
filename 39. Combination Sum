@@ -1,0 +1,32 @@
+class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+        backtrack(candidates, target, 0, new ArrayList<>(), result);
+        return result;
+    }
+
+    private void backtrack(int[] candidates, int target, int start, List<Integer> currentCombination, List<List<Integer>> result) {
+        // Base case 1: If the target is 0, we found a valid combination.
+        if (target == 0) {
+            result.add(new ArrayList<>(currentCombination));
+            return;
+        }
+
+        // Base case 2: If the target becomes negative, this path is not valid.
+        if (target < 0) {
+            return;
+        }
+
+        // Recursive step: Iterate through candidates from the 'start' index.
+        for (int i = start; i < candidates.length; i++) {
+            // Choose the current candidate.
+            currentCombination.add(candidates[i]);
+
+            // Recurse with the updated target and the same start index (for unlimited use of the same number).
+            backtrack(candidates, target - candidates[i], i, currentCombination, result);
+
+            // Backtrack: Un-choose the candidate to explore other possibilities.
+            currentCombination.remove(currentCombination.size() - 1);
+        }
+    }
+}
