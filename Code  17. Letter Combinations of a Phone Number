@@ -1,0 +1,60 @@
+Class Solution {
+
+    // A list to store the final combinations
+    private List<String> combinations = new ArrayList<>();
+    
+    // Mapping of digits to letters, similar to a phone keypad
+    private final Map<Character, String> letters = Map.of(
+        '2', "abc", '3', "def", '4', "ghi", '5', "jkl", 
+        '6', "mno", '7', "pqrs", '8', "tuv", '9', "wxyz"
+    );
+
+    // The input digits string
+    private String phoneDigits;
+
+    /**
+     * The main function to initiate the backtracking process.
+     * @param digits The input string of digits from 2-9.
+     * @return A list of all possible letter combinations.
+     */
+    public List<String> letterCombinations(String digits) {
+        // If the input is empty, return an empty list as per the problem description.
+        if (digits.length() == 0) {
+            return combinations;
+        }
+        
+        this.phoneDigits = digits;
+        // Start the backtracking from the first digit (index 0) with an empty path.
+        backtrack(0, new StringBuilder());
+        return combinations;
+    }
+
+    /**
+     * The recursive backtracking function.
+     * @param index The current digit we are processing.
+     * @param path The combination of letters built so far.
+     */
+    private void backtrack(int index, StringBuilder path) {
+        // Base case: If the path's length equals the input digits' length,
+        // we have a complete combination. Add it to our list and return.
+        if (path.length() == phoneDigits.length()) {
+            combinations.add(path.toString());
+            return;
+        }
+
+        // Get the letters corresponding to the current digit.
+        String possibleLetters = letters.get(phoneDigits.charAt(index));
+        
+        // Loop through each possible letter.
+        for (char letter : possibleLetters.toCharArray()) {
+            // 1. Choose: Append the letter to the current path.
+            path.append(letter);
+            
+            // 2. Explore: Recurse with the next digit's index.
+            backtrack(index + 1, path);
+            
+            // 3. Unchoose (Backtrack): Remove the last letter to explore other possibilities.
+            path.deleteCharAt(path.length() - 1);
+        }
+    }
+}
