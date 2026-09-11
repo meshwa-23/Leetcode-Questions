@@ -1,0 +1,51 @@
+```java
+import java.util.*;
+
+class Solution {
+    public int totalNumbers(int[] digits) {
+
+        Set<Integer> set = new HashSet<>();
+
+        // Choose the first digit
+        for (int i = 0; i < digits.length; i++) {
+
+            // First digit cannot be 0
+            if (digits[i] == 0) {
+                continue;
+            }
+
+            // Choose the second digit
+            for (int j = 0; j < digits.length; j++) {
+
+                // Same copy of a digit cannot be used twice
+                if (j == i) {
+                    continue;
+                }
+
+                // Choose the third digit
+                for (int k = 0; k < digits.length; k++) {
+
+                    // Same copy cannot be reused
+                    if (k == i || k == j) {
+                        continue;
+                    }
+
+                    // Last digit must be even
+                    if (digits[k] % 2 != 0) {
+                        continue;
+                    }
+
+                    int number = digits[i] * 100
+                               + digits[j] * 10
+                               + digits[k];
+
+                    // Set automatically removes duplicates
+                    set.add(number);
+                }
+            }
+        }
+
+        return set.size();
+    }
+}
+```
